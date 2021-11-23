@@ -10,5 +10,5 @@ if [ -z "$LOGDIR" ]; then
     $PROGDIR/noip-renew.py "$USERNAME" "$PASSWORD" 2
 else
     cd $LOGDIR
-    $PROGDIR/noip-renew.py "$USERNAME" "$PASSWORD" 0 >> $USERNAME.log
+    $PROGDIR/noip-renew.py "$USERNAME" "$PASSWORD" 2 >> $USERNAME.log
 fi
