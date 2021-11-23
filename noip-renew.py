@@ -109,6 +109,7 @@ class Robot:
         today = date.today() + timedelta(days=nr)
         day = str(today.day)
         month = str(today.month)
+        self.logger.log(f"Crontab for next run: day {day} month {month}")
         if crontab_enabled: subprocess.call(['/usr/local/bin/noip-renew-skd.sh', day, month, "True"])
         return True
 
@@ -144,11 +145,15 @@ class Robot:
             return 0
         if host_remaining_days.get_attribute("data-original-title") is not None:
             regex_match = re.search("\\d+", host_remaining_days.get_attribute("data-original-title"))
+            isConfirm = 'Confirm' in host_remaining_days.get_attribute("data-original-title")
         else:
             regex_match = re.search("\\d+", host_remaining_days.text)
+            isConfirm = 'Confirm' in host_remaining_days.text
         if regex_match is None:
             raise Exception("Expiration days label does not match the expected pattern in iteration: {iteration}")
         expiration_days = int(regex_match.group(0))
+        if isConfirm:
+            expiration_days = expiration_days + 7
         return expiration_days
 
     @staticmethod
