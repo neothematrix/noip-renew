@@ -16,7 +16,7 @@
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+#from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import date
@@ -89,7 +89,8 @@ class Robot:
         
         ele_usr.send_keys(self.username)
         ele_pwd.send_keys(base64.b64decode(self.password).decode('utf-8'))
-        ele_pwd.send_keys(Keys.ENTER)
+        #ele_pwd.send_keys(Keys.ENTER)
+        self.browser.find_element(By.XPATH, "//form[@id='clogs']/button[@type='submit']").click()
         
         # After Loggin browser loads my.noip.com page - give him some time to load
         # 'noip-cart' element is near the end of html, so html have been loaded
