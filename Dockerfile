@@ -10,7 +10,7 @@ RUN apt-get -y install chromium-chromedriver || \
     apt-get -y install chromium-driver || \
     apt-get -y install chromedriver
 RUN if [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then apt-get -y install libffi-dev rustc; fi
-RUN apt-get -y ${PYTHON}-pip
+RUN apt-get -y install ${PYTHON}-pip
 RUN $PYTHON -m pip install --upgrade pip
 RUN $PYTHON -m pip install selenium
 RUN apt-get -y install curl wget
