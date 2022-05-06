@@ -9,7 +9,7 @@ RUN apt-get update && apt-get -y upgrade
 RUN apt-get -y install chromium-chromedriver || \
     apt-get -y install chromium-driver || \
     apt-get -y install chromedriver
-RUN if [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then apt-get -y install libffi-dev musl-dev jpeg-dev zlib-dev libssl-dev cairo-dev pango-dev gdk-pixbuf-devrustc; fi
+RUN if [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then apt-get -y install libffi-dev musl-dev libssl-dev; fi
 RUN apt-get -y install ${PYTHON}-pip
 RUN $PYTHON -m pip install --upgrade pip
 RUN $PYTHON -m pip install selenium
