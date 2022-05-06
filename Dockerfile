@@ -9,6 +9,7 @@ RUN apt-get -y install chromium-chromedriver || \
     apt-get -y install chromium-driver || \
     apt-get -y install chromedriver
 RUN apt-get -y install libffi-dev ${PYTHON}-pip
+RUN $PYTHON -m pip install --upgrade pip
 RUN $PYTHON -m pip install selenium
 RUN apt-get -y install curl wget
 
