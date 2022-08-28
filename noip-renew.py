@@ -89,6 +89,8 @@ class Robot:
         ele_pwd.send_keys(base64.b64decode(self.password).decode('utf-8'))
         ele_pwd.send_keys(Keys.ENTER)
         
+        self.logger.log(f"Opening {Robot.HOST_URL}...")
+        self.browser.get(Robot.HOST_URL)
         # After Loggin browser loads my.noip.com page - give him some time to load
         # 'noip-cart' element is near the end of html, so html have been loaded
         try:
