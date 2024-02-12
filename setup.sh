@@ -153,7 +153,6 @@ function uninstall() {
     if [ "${clearLogs^^}" = "Y" ]
     then
       $SUDO rm -rf $LOGDIR
-      $SUDO crontab -u $USER -l | grep -v '/noip-renew*'  | $SUDO crontab -u $USER -
     fi
 }
 
