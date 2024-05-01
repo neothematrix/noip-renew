@@ -21,12 +21,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import date
 from datetime import timedelta
+from pyotp import *
 import time
 import sys
 import os
 import re
 import base64
 import subprocess
+
+OTP_SECRET = ""
 
 class Logger:
     def __init__(self, level):
@@ -89,6 +92,21 @@ class Robot:
         ele_pwd.send_keys(base64.b64decode(self.password).decode('utf-8'))
         ele_pwd.send_keys(Keys.ENTER)
         
+        try:
+            elem = WebDriverWait(self.browser, 10).until( EC.presence_of_element_located((By.ID, "verificationCode")))
+        except:
+            raise Exception("2FA verify page could not load")
+
+        if self.debug > 1:
+            self.browser.save_screenshot("debug-otp.png")
+        
+        self.logger.log("Sending OTP...")
+
+        ele_challenge = elem.find_element(By.NAME, "challenge_code")
+
+        ele_challenge.send_keys(TOTP(OTP_SECRET).now())
+        ele_challenge.send_keys(Keys.ENTER)
+
         # After Loggin browser loads my.noip.com page - give him some time to load
         # 'noip-cart' element is near the end of html, so html have been loaded
         try:
