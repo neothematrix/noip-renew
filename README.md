@@ -40,12 +40,16 @@ grep -h Confirmed *.log | grep -v ": 0" | sort
 ```
 ## Usage with Docker
 
-For docker users, run the following:
+For docker users you need to define the following ENV variables:
+
+NOIP_USERNAME = '<your username>'
+NOIP_PASSWORD = '<your password (plain not base64 encoded)>'
+NOIP_2FA_SECRET_KEY = '<your 2FA secret key that appeared when you setup 2FA>'
+NOIP_DEBUG = <optional, defaults to 1>
+
+so you can run the following:
 ```sh
-my_username='add username here'
-my_password='add base64 encoded password here'
-debug_lvl=2
-echo -e "$(crontab -l)"$'\n'"12  3  *  *  1,3,5  docker run --rm --network host moebiuss/noip-renew ${my_username} ${my_password} ${debug_lvl}" | crontab -
+echo -e "$(crontab -l)"$'\n'"12  3  *  *  1,3,5  docker run --rm --network host -e NOIP_USERNAME='<your_username>' -e NOIP_PASSWORD='<your_password>' -e NOIP_2FA_SECRET_KEY='<your 2fa secret key>' -e NOIP_DEBUG=2 moebiuss/noip-renew" | crontab -
 ```
 NOTE: with newer versions of ChromeDriver (>v99) you might need to increase the shm size of the container otherwise ChromeDriver will crash and throw an exception. To do it, you can just add the "--shm-size="512m" flag to the docker run command.
 

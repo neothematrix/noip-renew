@@ -35,9 +35,7 @@ function install() {
             install_debian
             ;;
     esac
-    # Debian9 package 'python-selenium' does not work with chromedriver,
-    # Install from pip, which is newer
-    $SUDO $PYTHON -m pip install selenium
+
     if [ "$PYTHON35" = true ]; then
         $SUDO $PYTHON -m pip install future-fstrings
     fi
@@ -47,7 +45,9 @@ function install_arch(){
     $SUDO pacman -Qi cronie > /dev/null ||  $SUDO pacman -S cronie
     $SUDO pacman -Qi python > /dev/null ||  $SUDO pacman -S python
     $SUDO pacman -Qi python-pip > /dev/null ||  $SUDO pacman -S python-pip
+    $SUDO pacman -Qi python-pyotp > /dev/null ||  $SUDO pacman -S python-pyotp
     $SUDO pacman -Qi chromium > /dev/null || $SUDO pacman -S chromium
+    $SUDO $PYTHON -m pip install selenium
 }
 
 function install_debian(){
@@ -88,6 +88,13 @@ function install_debian(){
         $SUDO apt -y install chromium # Update Chromium Browser or script won't work.
         
         $SUDO apt -y install $PYTHON-pip
+        $SUDO apt -y install $PYTHON-pyotp
+
+	if [[ "$PYV" -gt "36" ]]; then
+		$SUDO apt -y install $PYTHON-selenium
+	else
+		$SUDO $PYTHON -m pip install selenium
+	fi
 }
 
 function deploy() {
@@ -121,15 +128,18 @@ function deploy() {
 }
 
 function noip() {
-    echo "Enter your No-IP Account details..."
+    echo "Enter your No-IP Account details...make sure you enabled 2fa authentication and saved the 2fa secret key"
     read -p 'Username: ' uservar
     read -sp 'Password: ' passvar
+    echo
+    read -sp '2FA Secret Key: ' totpsecret
 
     passvar=`echo -n $passvar | base64`
     echo
 
     $SUDO sed -i 's/USERNAME=".*"/USERNAME="'$uservar'"/1' $INSTEXE
     $SUDO sed -i 's/PASSWORD=".*"/PASSWORD="'$passvar'"/1' $INSTEXE
+    $SUDO sed -i 's/TOTP_SECRET=".*"/TOTP_SECRET="'$totpsecret'"/1' $INSTEXE
 
     read -p 'Do you want randomized cronjob? (y/n): ' rcron
     if [ "${rcron^^}" = "Y" ]
