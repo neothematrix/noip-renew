@@ -21,6 +21,8 @@ NOTE: this is an up-to-date fork of loblab/noip-renew repository as it seems it'
 
 ## Prerequisites
 
+ENABLE 2FA authentication on your account and save the 2FA Secret key that is shared only once when you activate it
+
 ChromeDriver is required for the script to interface with noip.com from within the script.
 ChromeDriver must be maintained to match the installed version of Chrome.
 There is no automated repository that provides ChromeDriver package beyond Ubuntu 18 LTS.
@@ -42,10 +44,12 @@ grep -h Confirmed *.log | grep -v ": 0" | sort
 
 For docker users you need to define the following ENV variables:
 
+```
 NOIP_USERNAME = '<your username>'
 NOIP_PASSWORD = '<your password (plain not base64 encoded)>'
 NOIP_2FA_SECRET_KEY = '<your 2FA secret key that appeared when you setup 2FA>'
 NOIP_DEBUG = <optional, defaults to 1>
+```
 
 so you can run the following:
 ```sh
