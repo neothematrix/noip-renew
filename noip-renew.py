@@ -29,7 +29,7 @@ import re
 import base64
 import subprocess
 
-VERSION = "2.0.0"
+VERSION = "2.0.1"
 DOCKER = False
 
 class Logger:
