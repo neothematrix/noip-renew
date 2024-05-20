@@ -15,6 +15,7 @@
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -111,9 +112,9 @@ class Robot:
         self.logger.log("Sending OTP...")
 
         ele_challenge = elem.find_element(By.NAME, "challenge_code")
-
-        ele_challenge.send_keys(TOTP(self.totp_secret).now())
-        ele_challenge.send_keys(Keys.ENTER)
+        self.browser.execute_script("arguments[0].focus();", ele_challenge)
+        ActionChains(self.browser).send_keys(TOTP(self.totp_secret).now()).perform()
+        ActionChains(self.browser).send_keys(Keys.ENTER).perform()
 
         # After Loggin browser loads my.noip.com page - give him some time to load
         # 'noip-cart' element is near the end of html, so html have been loaded
