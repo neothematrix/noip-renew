@@ -30,7 +30,7 @@ import re
 import base64
 import subprocess
 
-VERSION = "2.0.1"
+VERSION = "2.0.3"
 DOCKER = False
 
 class Logger:
@@ -204,7 +204,7 @@ class Robot:
 
     @staticmethod
     def get_host_link(host, iteration):
-        return host.find_element(By.XPATH, ".//a[@class='link-info cursor-pointer']")
+        return host.find_element(By.XPATH, ".//a[@class='link-info cursor-pointer notranslate']")
 
     @staticmethod
     def get_host_button(host, iteration):
